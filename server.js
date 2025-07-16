@@ -2,11 +2,11 @@ import express from 'express'
 import { startups } from './data/data.js'
 
 const PORT = 8000
-
 const app = express()
 
 app.get('/api', (req, res) => {
-
+try{
+  
   let filteredData = startups
 
  const{ industry, country, continent, is_seeking_funding, has_mvp }= req.query
@@ -35,7 +35,12 @@ if(filteredData.length === 0) {
   return res.status(404).json({ message: 'No startups found with the given criteria.' })
 }
 res.json(filteredData)
-
+}catch(err){
+  console.error('Error filtering startups:', err)
+  res.status(500).json({
+    message: 'Something went wrong while filtering startups.',
+  })
+}
 })
 
 app.listen(PORT, () => console.log(`server connected on port ${PORT}`))
