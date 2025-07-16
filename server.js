@@ -13,8 +13,10 @@ const parseBoolean = (value) =>{
 
 app.get('/api', (req, res) => {
 try{
-  
-  let filteredData = startups
+  //[...startups] creates a shallow copy of the startups array
+  //This is useful to prevent changing the original array while filtering
+  //that [...] is called the spread operatorok 
+  let filteredData = [...startups]
 
  const{ industry, country, continent, is_seeking_funding, has_mvp }= req.query
  
