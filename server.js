@@ -4,6 +4,13 @@ import { startups } from './data/data.js'
 const PORT = 8000
 const app = express()
 
+const parseBoolean = (value) =>{
+  if (typeof value === 'string') {
+    return value.toLowerCase() === 'true'
+  }
+  return Boolean(value)
+}
+
 app.get('/api', (req, res) => {
 try{
   
@@ -23,12 +30,14 @@ if(continent){
   filteredData = filteredData.filter(obj=> obj.continent.toLowerCase() === continent.toLowerCase())
 }
 
-if(is_seeking_funding){
-  filteredData = filteredData.filter(obj=> obj.is_seeking_funding === JSON.parse(is_seeking_funding.toLowerCase()))
+if(is_seeking_funding !== undefined ){
+  const seekingFunding =parseBoolean(is_seeking_funding)
+  filteredData = filteredData.filter(obj=> obj.is_seeking_funding === seekingFunding)
 }
 
-if(has_mvp){
-  filteredData = filteredData.filter(obj => obj.has_mvp === JSON.parse(has_mvp.toLowerCase()))
+if(has_mvp !== undefined){
+  const hasMVP = parseBoolean(has_mvp)
+  filteredData = filteredData.filter(obj => obj.has_mvp === hasMVP)
 }
 
 if(filteredData.length === 0) {
